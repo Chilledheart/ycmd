@@ -13,3 +13,6 @@
 [submodule "third_party/mrab-regex-github"]
 	path = third_party/mrab-regex-github
 	url = https://github.com/mrabarnett/mrab-regex
+[submodule "cpp/absl"]
+	path = cpp/absl
+	url = https://github.com/abseil/abseil-cpp

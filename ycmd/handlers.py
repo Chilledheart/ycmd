@@ -35,6 +35,9 @@ from ycmd.responses import ( BuildExceptionResponse,
                              UnknownExtraConf )
 from ycmd.request_wrap import RequestWrap
 from ycmd.completers.completer_utils import FilterAndSortCandidatesWrap
+from ycmd.completers.cpp.clangd_completer import ( ShouldEnableClangdCompleter,
+                                                   CLANGD_COMMAND,
+                                                   CLANGD_VERSION )
 from ycmd.utils import LOGGER, StartThread, ImportCore
 ycm_core = ImportCore()
 
@@ -308,6 +311,10 @@ def DebugInfo( request, response ):
   has_clang_support = ycm_core.HasClangSupport()
   clang_version = ycm_core.ClangVersion() if has_clang_support else None
 
+  has_clangd_support = ShouldEnableClangdCompleter( _server_state.user_options )
+  clangd_version = CLANGD_VERSION if has_clangd_support else None
+  clangd_command = CLANGD_COMMAND if has_clangd_support else None
+
   filepath = request_data[ 'filepath' ]
   try:
     extra_conf_path = extra_conf_store.ModuleFileForSourceFile( filepath )
@@ -324,6 +331,11 @@ def DebugInfo( request, response ):
     'clang': {
       'has_support': has_clang_support,
       'version': clang_version
+    },
+    'clangd': {
+      'has_support': has_clangd_support,
+      'version': clangd_version,
+      'command': clangd_command
     },
     'extra_conf': {
       'path': extra_conf_path,

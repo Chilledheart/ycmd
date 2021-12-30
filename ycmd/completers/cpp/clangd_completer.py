@@ -43,6 +43,7 @@ INCLUDE_REGEX = re.compile(
   '(\\s*#\\s*(?:include|import)\\s*)(?:"[^"]*|<[^>]*)' )
 NOT_CACHED = 'NOT_CACHED'
 CLANGD_COMMAND = NOT_CACHED
+CLANGD_VERSION = NOT_CACHED
 PRE_BUILT_CLANGD_DIR = os.path.abspath( os.path.join(
   os.path.dirname( __file__ ),
   '..',
@@ -73,9 +74,11 @@ def GetVersion( clangd_path ):
 
 
 def CheckClangdVersion( clangd_path ):
+  global CLANGD_VERSION
   version = GetVersion( clangd_path )
   if version and version < MIN_SUPPORTED_VERSION:
     return False
+  CLANGD_VERSION = version
   return True
 
 
